@@ -6,6 +6,7 @@ from tkinter import Tk, Label, Entry, Button, mainloop, PhotoImage, Frame,\
     Listbox, messagebox, Text, Scrollbar, Toplevel, Spinbox
 from tkinter.simpledialog import askstring, askinteger
 import mysql.connector
+from utilities import ScrollableFrame
 
 # Variables
 db_list = []
@@ -189,6 +190,7 @@ def select_db():
     title_label.config(text="Select Tables")
     create_btn.config(command=create_table)
     delete_btn.config(command=delete_table)
+    select_btn.config(command=select_table)
     show_tables()
 
 
@@ -222,6 +224,32 @@ def delete_table():
         delete_last_log()
         messagebox.showerror("Error",
                              "Failed to delete!")
+
+
+def select_table():
+    selection = data_list.curselection()
+    selection = int(selection[0])
+
+    global tables_list
+    table_data = db_query(f"SELECT * FROM {tables_list[selection]};")
+
+    table_window = Toplevel()
+    table_window.state("zoomed")
+    table_window.minsize(400, 100)
+    scroll_view = ScrollableFrame(table_window)
+    column_names = mycursor.column_names
+
+    for index, name in enumerate(column_names):
+        Label(scroll_view.scrollable_frame, text=name).grid(
+            row=0, column=index + 1)
+
+    for count, data in enumerate(table_data):
+        column_len = len(data)
+        for column_index in range(0, column_len):
+            Label(scroll_view.scrollable_frame, text=data[column_index]).grid(
+                row=count + 1, column=column_index + 1)
+
+    scroll_view.pack(fill=BOTH, expand=True)
 
 
 def close_greet_window():
