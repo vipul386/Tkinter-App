@@ -391,6 +391,7 @@ edit_btn = Button(action_bar,
                   font=(font_family, 16),
                   borderwidth=0,
                   command=edit_db)
+
 # edit_btn.pack(side=RIGHT, padx=(0, 10))
 
 insert_icon_img = PhotoImage(file="UI/Insert Button.png")
@@ -407,6 +408,7 @@ select_btn = Button(action_bar,
                     font=(font_family, 16),
                     borderwidth=0,
                     command=select_db)
+
 select_btn.pack(side=RIGHT, padx=(0, 10))
 
 back_icon_img = PhotoImage(file="UI/Back Button.png")
@@ -418,5 +420,6 @@ back_btn = Button(action_bar,
 back_btn.pack(side=LEFT, padx=(25, 0))
 
 show_db()
+select_btn.pack(side=RIGHT, padx=15)
 
 mainloop()
