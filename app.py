@@ -380,7 +380,7 @@ edit_btn = Button(action_bar,
                   font=(font_family, 16),
                   borderwidth=0,
                   command=edit_db)
-edit_btn.pack(side=RIGHT, padx=10)
+# edit_btn.pack(side=RIGHT, padx=10)
 
 select_icon_img = PhotoImage(file="UI/Select Button.png")
 select_btn = Button(action_bar,
@@ -388,6 +388,6 @@ select_btn = Button(action_bar,
                     font=(font_family, 16),
                     borderwidth=0,
                     command=select_db)
-select_btn.pack(side=RIGHT)
+select_btn.pack(side=RIGHT, padx=15)
 
 mainloop()
