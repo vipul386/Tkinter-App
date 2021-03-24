@@ -49,15 +49,26 @@ mycursor = mydb.cursor()
 def db_query(query):
     add_log(query)
     mycursor.execute(query)
-    myresult = mycursor.fetchall()
+    try:
+        myresult = mycursor.fetchall()
+    except:
+        return
     return myresult
 
 
 def show_db():
+    global db_list
     data_list.delete(0, END)
+    db_list.clear()
+    mydb._database = None
+
+    title_label.config(text="Select Database")
+    create_btn.config(command=create_db)
+    delete_btn.config(command=delete_db)
+    select_btn.config(command=select_db)
+
     for db_name in db_query("SHOW DATABASES;"):
         data_list.insert(END, db_name)
-        global db_list
         db_list += db_name
 
 
@@ -185,6 +196,7 @@ def select_db():
     selection = int(selection[0])
 
     global db_list
+    tables_list.clear()
     add_log(f"USE {db_list[selection]};")
     mydb.database = db_list[selection]
     title_label.config(text="Select Tables")
@@ -357,7 +369,6 @@ data_list = Listbox(database_panel,
                     highlightcolor="white",
                     bg="white")
 
-show_db()
 
 data_list.pack(side=LEFT, fill=BOTH, expand=True)
 database_scroll.config(command=data_list.yview)
@@ -380,7 +391,16 @@ edit_btn = Button(action_bar,
                   font=(font_family, 16),
                   borderwidth=0,
                   command=edit_db)
-# edit_btn.pack(side=RIGHT, padx=10)
+
+# edit_btn.pack(side=RIGHT, padx=(0, 10))
+
+insert_icon_img = PhotoImage(file="UI/Insert Button.png")
+insert_btn = Button(action_bar,
+                    image=insert_icon_img,
+                    font=(font_family, 16),
+                    borderwidth=0,
+                    command=edit_db)
+# insert_btn.pack(side=RIGHT, padx=(0, 10))
 
 select_icon_img = PhotoImage(file="UI/Select Button.png")
 select_btn = Button(action_bar,
@@ -388,6 +408,18 @@ select_btn = Button(action_bar,
                     font=(font_family, 16),
                     borderwidth=0,
                     command=select_db)
+
+select_btn.pack(side=RIGHT, padx=(0, 10))
+
+back_icon_img = PhotoImage(file="UI/Back Button.png")
+back_btn = Button(action_bar,
+                  image=back_icon_img,
+                  font=(font_family, 16),
+                  borderwidth=0,
+                  command=show_db)
+back_btn.pack(side=LEFT, padx=(25, 0))
+
+show_db()
 select_btn.pack(side=RIGHT, padx=15)
 
 mainloop()
